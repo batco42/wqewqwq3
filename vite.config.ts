@@ -3,17 +3,20 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
+// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/", // Vercel için önemli
+  base: "./", // ⚠ Vercel için önemli
+  server: {
+    host: "::",
+    port: 8080,
+  },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(dirname, "./src"),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    rollupOptions: {
-      input: path.resolve(dirname, "index.html"), // index.html entry point
-    },
+    outDir: "dist", // ⚠ Build çıktısı klasörü
   },
 }));
